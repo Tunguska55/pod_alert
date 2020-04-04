@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as CO
+from selenium.webdriver.firefox.options import Options as FO
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -12,8 +13,8 @@ import sys
 username = os.getenv('PPUSER') if os.getenv('PPUSER') else sys.exit('Missing user variable')
 password = os.getenv('PPPASS') if os.getenv('PPPASS') else sys.exit('Missing password variable')
 
-chrome_options = Options()
-firefox_options = Options()
+chrome_options = CO()
+firefox_options = FO()
 
 # Chrome
 chrome_options.add_argument('--ignore-certificate-errors')
@@ -21,11 +22,11 @@ chrome_options.add_argument('--ignore-certificate-errors')
 chrome_options.add_argument('--incognito')
 chrome_options.add_argument('--user-data-dir=selenium')
 # options.add_argument('--headless')
+# driver = webdriver.Chrome(options=chrome_options)
 
 # Firefox
-firefox_options.add_argument('-private')
-
-driver = webdriver.Chrome(options=options)
+firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
+driver = webdriver.Firefox(firefox_options=firefox_options)
 # driver.get("https://www.peapod.com")
 driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
 
@@ -37,7 +38,8 @@ pass_sign.clear()
 pass_sign.send_keys(password)
 start_shopping = driver.find_element_by_xpath('/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/form/div[4]/button[2]')
 start_shopping.click()
-
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
+warning_pop = driver.find_elements_by_class_name('optly-modal-close')
 # guest = driver.find_element_by_name("zipEntry")
 # guest.clear()
 # guest.send_keys("10512")
