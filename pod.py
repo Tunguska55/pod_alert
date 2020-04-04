@@ -4,8 +4,8 @@ from selenium.webdriver.chrome.options import Options as CO
 from selenium.webdriver.firefox.options import Options as FO
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support import TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 import pickle
 import time
 import os
