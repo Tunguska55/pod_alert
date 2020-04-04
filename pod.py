@@ -30,13 +30,30 @@ firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
 driver = webdriver.Firefox(firefox_options=firefox_options)
 # driver.get("https://www.peapod.com")
 
+# This might need to get changed since it's a redirect
+# Option 1
+# driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
 
-driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
+# try:
+#     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
+# except TimeoutException:
+#     driver.refresh()
+
+# Option 2
+driver.get('https://www.peapod.com/shop/auth/login')
 
 try:
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.button:nth-child(1)")))
 except TimeoutException:
     driver.refresh()
+account_exists = driver.find_element_by_css_selector('button.button:nth-child(1)')
+account_exists.click()
+
+if os.path.exists("cookies.pkl"):
+    cookies = pickle.load(open("cookies.pkl", "rb"))
+    driver.delete_all_cookies()
+    for cookie in cookies:
+        driver.add_cookie(cookie)
 
 sign_in = False
 retries = 0
@@ -55,6 +72,9 @@ while not sign_in or retries < 3:
     except TimeoutException:
         driver.refresh()
         retries+=1
+
+if not os.path.exists("cookies.pkl"):
+    pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
 
 warning_pop = driver.find_element_by_css_selector('.optly-modal-close')
 warning_pop.click()
