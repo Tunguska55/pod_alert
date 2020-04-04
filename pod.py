@@ -29,26 +29,46 @@ chrome_options.add_argument('--user-data-dir=selenium')
 firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
 driver = webdriver.Firefox(firefox_options=firefox_options)
 # driver.get("https://www.peapod.com")
+
+
 driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
-#TODO add option where if page doesn't load it refreshes automatically
+
 try:
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
 except TimeoutException:
     driver.refresh()
 
-use_sign = driver.find_element_by_name("loginName")
-use_sign.clear()
-use_sign.send_keys(username)
-pass_sign = driver.find_element_by_name("password")
-pass_sign.clear()
-pass_sign.send_keys(password)
-start_shopping = driver.find_element_by_xpath('/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/form/div[4]/button[2]')
-start_shopping.click()
-WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
+sign_in = False
+retries = 0
+while not sign_in or retries < 3:
+    use_sign = driver.find_element_by_name("loginName")
+    use_sign.clear()
+    use_sign.send_keys(username)
+    pass_sign = driver.find_element_by_name("password")
+    pass_sign.clear()
+    pass_sign.send_keys(password)
+    start_shopping = driver.find_element_by_xpath('/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/form/div[4]/button[2]')
+    start_shopping.click()
+    try:
+        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
+        sign_in = True
+    except TimeoutException:
+        driver.refresh()
+        retries+=1
+
 warning_pop = driver.find_element_by_css_selector('.optly-modal-close')
 warning_pop.click()
 reserve_time = driver.find_element_by_css_selector('a.subnav-shopping-mode_element:nth-child(5)')
 reserve_time.click()
+
+# Main code, where I check for availability
+
+# Making sure the window pops up
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'slot-selection-header-title')))
+
+
+
+
 # guest = driver.find_element_by_name("zipEntry")
 # guest.clear()
 # guest.send_keys("10512")
