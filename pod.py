@@ -11,6 +11,11 @@ import time
 import os
 import sys
 
+# Rate limit exists, not sure what the amount is and how long it lasts
+# Currently at 35 minutes and still can't login
+
+# Check every 15 minutes would be ideal to prevent rate limiting I would imagine
+
 username = os.getenv('PPUSER') if os.getenv('PPUSER') else sys.exit('Missing user variable')
 password = os.getenv('PPPASS') if os.getenv('PPPASS') else sys.exit('Missing password variable')
 
@@ -28,26 +33,26 @@ chrome_options.add_argument('--user-data-dir=selenium')
 # Firefox
 firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
 driver = webdriver.Firefox(firefox_options=firefox_options)
-# driver.get("https://www.peapod.com")
+driver.get("https://www.peapod.com")
 
 # This might need to get changed since it's a redirect
 # Option 1
-# driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
-
-# try:
-#     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
-# except TimeoutException:
-#     driver.refresh()
-
-# Option 2
-driver.get('https://www.peapod.com/shop/auth/login')
+driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
 
 try:
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.button:nth-child(1)")))
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
 except TimeoutException:
     driver.refresh()
-account_exists = driver.find_element_by_css_selector('button.button:nth-child(1)')
-account_exists.click()
+
+# Option 2
+# driver.get('https://www.peapod.com/shop/auth/login')
+
+# try:
+#     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.button:nth-child(1)")))
+# except TimeoutException:
+#     driver.refresh()
+# account_exists = driver.find_element_by_css_selector('button.button:nth-child(1)')
+# account_exists.click()
 
 if os.path.exists("cookies.pkl"):
     cookies = pickle.load(open("cookies.pkl", "rb"))
