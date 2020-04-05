@@ -101,8 +101,7 @@ time_slots = time_slot_parent.find_elements_by_tag_name("li")
 
 for slot in time_slots:
     if 'unavailable' in slot.get_attribute("aria-label"):
-        print("unavaialble")
-        break
+        continue
 
 # BS4 Implementation
 soup = BeautifulSoup(reserve_time_source, 'lxml')
