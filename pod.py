@@ -100,11 +100,35 @@ time_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/di
 time_slots = time_slot_parent.find_elements_by_tag_name("li")
 
 for slot in time_slots:
-    if 'unavailable' in slot.get_attribute("aria-label"):
+    al = slot.get_attribute("aria-label")
+    print("*****")
+    if 'unavailable' in al:
+        print(al)
+        print("Continuing...")
         continue
+    else:
+        print("Choosing: {}".format(al))
+        # Date being chosen
+        slot.click()
+        # Allows time slots to show
+        driver.implicitly_wait(3)
+        # Now let's look for time slots
+        actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
+        actual_time = actual_time_parent.find_elements_by_tag_name("li")
+        for time in actual_time:
+            sl = time.get_attribute("aria-label")
+            avail = time.get_attribute("class")
+            if 'sold-out' in avail:
+                print("{} is sold out".format(sl))
+            else:
+                print("{} is AVAILABLE".format(sl))
+                # ALERTING CODE HERE
+        
+
 
 # BS4 Implementation
-soup = BeautifulSoup(reserve_time_source, 'lxml')
+
+
 # Keep around as reference
 
 # guest = driver.find_element_by_name("zipEntry")
