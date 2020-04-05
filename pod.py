@@ -90,12 +90,13 @@ reserve_time.click()
 # Main code, where I check for availability
 
 # Making sure the window pops up
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'slot-selection-header-title')))
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'aside')))
 
 reserve_time_source = driver.page_source
 
 # Lets grab all of the potential time slot tags
-time_slot_parent = driver.find_element_by_class_name('slot-headers-collection')
+driver.implicitly_wait(3)
+time_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
 time_slots = time_slot_parent.find_elements_by_tag_name("li")
 
 for slot in time_slots:
