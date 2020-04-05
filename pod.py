@@ -93,6 +93,7 @@ WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'slot-sel
 
 
 
+# Keep around as reference
 
 # guest = driver.find_element_by_name("zipEntry")
 # guest.clear()
@@ -100,17 +101,13 @@ WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'slot-sel
 # guest.send_keys(Keys.RETURN)
 # # time.sleep(2)
 # wait = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "serviceLocationId")))
+
+# Good example of how to loop through options
+
 # el = driver.find_element_by_name('serviceLocationId')
 # for option in el.find_elements_by_tag_name('option'):
 #     if option.text == 'Carmel, NY':
 #         option.click() # select() in earlier versions of webdriver
 #         break
-# wait = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.TAG_NAME, "button")))
-# start_shopping = driver.find_element_by_xpath('//*[@id="main-content"]/div/section[1]/div[2]/zipcode-entry/div/form/div[2]/div[2]/div[2]/button')
-# start_shopping.click()
-# print(driver.page_source)
-# # wait = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "pdl-shopping-mode-tile_text_content pdl-shopping-mode-tile_text_content--standalone")))
 
-# # reserve = driver.find_element_by_class_name("pdl-shopping-mode-tile_text_content pdl-shopping-mode-tile_text_content--standalone")
-# # reserve.click()
-# # driver.quit()
+# driver.quit()
