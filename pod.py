@@ -82,7 +82,7 @@ while not sign_in or retries < 3:
 
 # if not os.path.exists("cookies.pkl"):
 #     pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
-
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".optly-modal-close")))
 warning_pop = driver.find_element_by_css_selector('.optly-modal-close')
 warning_pop.click()
 reserve_time = driver.find_element_by_css_selector('a.subnav-shopping-mode_element:nth-child(5)')
