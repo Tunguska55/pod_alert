@@ -100,6 +100,8 @@ time_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/di
 time_slots = time_slot_parent.find_elements_by_tag_name("li")
 
 for slot in time_slots:
+    # Trying to give the page a chance to load
+    driver.implicitly_wait(3)
     al = slot.get_attribute("aria-label")
     print("*****")
     if 'unavailable' in al:
