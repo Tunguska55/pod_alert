@@ -115,6 +115,18 @@ print(len(day_slots))
 driver.quit()
 sys.exit("Done")
 
+slot_search = True
+completed_options = []
+while slot_search:
+    day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
+    day_slots = day_slot_parent.find_elements_by_tag_name("li")
+    if completed_options:
+        day_slots = [ns for ns in day_slots if ns not in completed_options]
+    lengthod = len(day_slots)
+    
+    
+    
+
 # for slot in day_slots:
 #     al = slot.get_attribute("aria-label")
 #     print("*****")
