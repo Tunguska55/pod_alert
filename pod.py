@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 import pickle
 import os
 import sys
+import random
 
 # Rate limit exists, not sure what the amount is and how long it lasts
 # Currently at 35 minutes and still can't login
@@ -95,36 +96,65 @@ WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'as
 reserve_time_source = driver.page_source
 
 # Lets grab all of the potential time slot tags
-driver.implicitly_wait(3)
-day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
-day_slots = day_slot_parent.find_elements_by_tag_name("li")
-print(day_slots)
-print(len(day_slots))
-print("Do the sessions change?")
-driver.implicitly_wait(2)
-day_slots[5].click()
-print(day_slots)
-print(len(day_slots))
-print("ON MORE TIME!")
-driver.implicitly_wait(2)
-day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
-day_slots = day_slot_parent.find_elements_by_tag_name("li")
-day_slots[8].click()
-print(day_slots)
-print(len(day_slots))
-driver.quit()
-sys.exit("Done")
+# LEAVE FOR TESTING
+# driver.implicitly_wait(3)
+# day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
+# day_slots = day_slot_parent.find_elements_by_tag_name("li")
+# print(day_slots)
+# print(len(day_slots))
+# print("Do the sessions change?")
+# driver.implicitly_wait(2)
+# day_slots[5].click()
+# print(day_slots)
+# print(len(day_slots))
+# print("ON MORE TIME!")
+# driver.implicitly_wait(2)
+# day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
+# day_slots = day_slot_parent.find_elements_by_tag_name("li")
+# day_slots[8].click()
+# print(day_slots)
+# print(len(day_slots))
+# driver.quit()
+# sys.exit("Done")
 
 slot_search = True
 completed_options = []
 while slot_search:
+    # Doing a wait here, just to be safe
+    driver.implicitly_wait(3)
+    print("*****")
     day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
     day_slots = day_slot_parent.find_elements_by_tag_name("li")
     if completed_options:
         day_slots = [ns for ns in day_slots if ns not in completed_options]
-    lengthod = len(day_slots)
-    
-    
+    if len(day_slots) == 0:
+        print("Went through all options, done")
+        break
+    random_index = random.randint(0,len(day_slots))
+    al = day_slots[random_index].get_attribute("aria-label")
+    if 'unavailable' in al:
+        print(al)
+        print("Continuing...")
+        completed_options.append(day_slots[random_index])
+        continue
+    else:
+        print("Choosing: {}".format(al))
+        # Date being chosen
+        day_slots[random_index].click()
+        # Allows time slots to show
+        driver.implicitly_wait(3)
+        actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
+        actual_time = actual_time_parent.find_elements_by_tag_name("li")
+        for time in actual_time:
+            sl = time.get_attribute("aria-label")
+            avail = time.get_attribute("class")
+            if 'sold-out' in avail:
+                print("{} is sold out".format(sl))
+            else:
+                print("{} is AVAILABLE".format(sl))
+                # ALERTING CODE HERE
+        completed_options.append(day_slots[random_index])
+driver.quit()    
     
 
 # for slot in day_slots:
