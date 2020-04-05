@@ -7,7 +7,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 import pickle
-import time
 import os
 import sys
 
@@ -99,7 +98,6 @@ WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'slot-sel
 # guest.clear()
 # guest.send_keys("10512")
 # guest.send_keys(Keys.RETURN)
-# # time.sleep(2)
 # wait = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "serviceLocationId")))
 
 # Good example of how to loop through options
