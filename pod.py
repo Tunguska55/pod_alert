@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from bs4 import BeautifulSoup
 import pickle
 import os
 import sys
@@ -73,6 +74,7 @@ while not sign_in or retries < 3:
     try:
         WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
         sign_in = True
+        break
     except TimeoutException:
         driver.refresh()
         retries+=1
@@ -90,8 +92,19 @@ reserve_time.click()
 # Making sure the window pops up
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'slot-selection-header-title')))
 
+reserve_time_source = driver.page_source
 
+# Lets grab all of the potential time slot tags
+time_slot_parent = driver.find_element_by_class_name('slot-headers-collection')
+time_slots = time_slot_parent.find_elements_by_tag_name("li")
 
+for slot in time_slots:
+    if 'unavailable' in slot.get_attribute("aria-label"):
+        print("unavaialble")
+        break
+
+# BS4 Implementation
+soup = BeautifulSoup(reserve_time_source, 'lxml')
 # Keep around as reference
 
 # guest = driver.find_element_by_name("zipEntry")
