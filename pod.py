@@ -54,11 +54,11 @@ except TimeoutException:
 # account_exists = driver.find_element_by_css_selector('button.button:nth-child(1)')
 # account_exists.click()
 
-if os.path.exists("cookies.pkl"):
-    cookies = pickle.load(open("cookies.pkl", "rb"))
-    driver.delete_all_cookies()
-    for cookie in cookies:
-        driver.add_cookie(cookie)
+# if os.path.exists("cookies.pkl"):
+#     cookies = pickle.load(open("cookies.pkl", "rb"))
+#     driver.delete_all_cookies()
+#     for cookie in cookies:
+#         driver.add_cookie(cookie)
 
 sign_in = False
 retries = 0
@@ -79,8 +79,8 @@ while not sign_in or retries < 3:
         driver.refresh()
         retries+=1
 
-if not os.path.exists("cookies.pkl"):
-    pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
+# if not os.path.exists("cookies.pkl"):
+#     pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
 
 warning_pop = driver.find_element_by_css_selector('.optly-modal-close')
 warning_pop.click()
