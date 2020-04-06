@@ -112,10 +112,9 @@ except TimeoutException:
 #     for cookie in cookies:
 #         driver.add_cookie(cookie)
 
-sign_in = False
 retries = 0
 max_retries = 3
-while not sign_in or retries < max_retries:
+while retries < max_retries:
     print("Signing in, attempt {} out of {}".format(retries+1, max_retries))
     use_sign = driver.find_element_by_name("loginName")
     use_sign.clear()
@@ -127,10 +126,10 @@ while not sign_in or retries < max_retries:
     start_shopping.click()
     try:
         WebDriverWait(driver, 45).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
-        sign_in = True
         print("Sign in successful")
         break
     except TimeoutException:
+        print("XXXX")
         print("Sign in failed, timed out")
         print("Refreshing sign in page")
         driver.refresh()
@@ -149,6 +148,7 @@ reserve_time.click()
 # Making sure the window pops up
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'aside')))
 
+# Not sure if this is still necessary
 reserve_time_source = driver.page_source
 
 initial_pass = False
