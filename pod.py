@@ -7,6 +7,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+import smtplib
 import pickle
 import os
 import sys
@@ -16,6 +21,46 @@ import random
 # Currently at 35 minutes and still can't login
 
 # Check every 15 minutes would be ideal to prevent rate limiting I would imagine
+
+def send_alert(ts):
+    username = os.getenv('OUTLOOKUSER') if os.getenv('OUTLOOKUSER') else sys.exit('Missing outlook user variable')
+    password = os.getenv('OUTLOOKPASS') if os.getenv('OUTLOOKPASS') else sys.exit('Missing outlook password variable')
+    receivers = os.getenv('RECEIVERS') if os.getenv('RECEIVERS') else sys.exit('Missing receivers variable')
+    sender_email = username
+    receiver_email = list(receivers)
+
+    msg = MIMEMultipart("alternative")
+    msg['From'] = username
+    msg['To'] = receiver_email
+    msg['Subject'] = "Delivery Slot Available"
+
+    text = ts
+    html = """\
+    <html>
+    <body>
+        <p> <strong> {} </strong> </p>
+    </body>
+    </html>
+    """.format(ts)
+
+    part1 = MIMEText(text, "plain")
+    part2 = MIMEText(html, "html")
+
+    msg.attach(part1)
+    msg.attach(part2)
+
+    mailServer = smtplib.SMTP('smtp-mail.outlook.com', 587)
+    mailServer.ehlo()
+    mailServer.starttls()
+    mailServer.ehlo()
+    mailServer.login(username, password)
+    try:
+        mailServer.sendmail(sender_email, receiver_email, msg.as_string())
+        print("Email sent")
+    except:
+        print("Email failed to send")
+    finally:
+        mailServer.quit()
 
 username = os.getenv('PPUSER') if os.getenv('PPUSER') else sys.exit('Missing user variable')
 password = os.getenv('PPPASS') if os.getenv('PPPASS') else sys.exit('Missing password variable')
@@ -140,8 +185,9 @@ while True:
                 print("{} is sold out".format(sl))
             else:
                 print("{} is AVAILABLE".format(sl))
+                print("Sending email now")
                 time_slot_found = True
-                # ALERTING CODE HERE
+                send_alert("{} {}".format(al, sl))
     # DEBUG
     # print(uncompleted_options)
 print("-------------")
