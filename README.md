@@ -15,3 +15,4 @@ PPUSER
 PPPASS
 OUTLOOKUSER
 OUTLOOKPASS
+RECEIVERS - for this one, enter in CSV format no spaces
