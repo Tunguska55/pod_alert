@@ -9,3 +9,9 @@ Requires:
 Setting execution policy for windows
 
 Chrome does not work, Firefox is necessary here
+
+Four environment variables are needed
+PPUSER
+PPPASS
+OUTLOOKUSER
+OUTLOOKPASS
