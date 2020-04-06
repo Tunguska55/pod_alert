@@ -96,6 +96,8 @@ WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'as
 reserve_time_source = driver.page_source
 
 initial_pass = False
+time_slot_found = False
+open_time_slot = {}
 while True:
     # Doing a wait here, just to be safe
     driver.implicitly_wait(3)
@@ -108,7 +110,7 @@ while True:
         uncompleted_options = list(range(0,len(day_slots)))
         initial_pass = True
     if not uncompleted_options:
-        print("List completed")
+        print("All of the days and times have been checked")
         break
     try:
         random_index = uncompleted_options.pop(uncompleted_options.index(random.choice(uncompleted_options)))
@@ -138,8 +140,16 @@ while True:
                 print("{} is sold out".format(sl))
             else:
                 print("{} is AVAILABLE".format(sl))
+                time_slot_found = True
                 # ALERTING CODE HERE
     print(uncompleted_options)
+print("-------------")
+if time_slot_found:
+    print("Time slot found!")
+else:
+    print("No available time slots.")
+
+# Clean up
 driver.quit()    
     
 
