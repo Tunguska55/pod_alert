@@ -95,35 +95,8 @@ WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'as
 
 reserve_time_source = driver.page_source
 
-# Lets grab all of the potential time slot tags
-# LEAVE FOR TESTING
-# driver.implicitly_wait(3)
-# day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
-# day_slots = day_slot_parent.find_elements_by_tag_name("li")
-# print(day_slots)
-# print(len(day_slots))
-# print("Do the sessions change?")
-# driver.implicitly_wait(2)
-# day_slots[5].click()
-# print(day_slots)
-# print(len(day_slots))
-# print("ON MORE TIME!")
-# driver.implicitly_wait(2)
-# day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
-# day_slots = day_slot_parent.find_elements_by_tag_name("li")
-# day_slots[8].click()
-# print(day_slots)
-# print(len(day_slots))
-# driver.quit()
-# sys.exit("Done")
-
-slot_search = True
-# For testing purposes, to make sure while loop isn't infinite
-while_break = 0
-
 initial_pass = False
-while slot_search or while_break < 20:
-    while_break+=1
+while True:
     # Doing a wait here, just to be safe
     driver.implicitly_wait(3)
     print("*****")
@@ -155,7 +128,7 @@ while slot_search or while_break < 20:
         # Date being chosen
         day_slots[random_index].click()
         # Allows time slots to show
-        driver.implicitly_wait(3)
+        driver.implicitly_wait(8)
         actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
         actual_time = actual_time_parent.find_elements_by_tag_name("li")
         for time in actual_time:
