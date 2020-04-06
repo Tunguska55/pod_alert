@@ -188,6 +188,7 @@ while True:
                 print("Sending email now")
                 time_slot_found = True
                 send_alert("{} {}".format(al, sl))
+                # TODO add reserve time interactivity, not just an alert
     # DEBUG
     # print(uncompleted_options)
 print("-------------")
