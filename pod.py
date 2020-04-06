@@ -129,7 +129,7 @@ while True:
         print("Choosing: {}".format(al))
         # Date being chosen
         day_slots[random_index].click()
-        # Allows time slots to show
+        # Allows time slots to show, 8 works great here
         driver.implicitly_wait(8)
         actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
         actual_time = actual_time_parent.find_elements_by_tag_name("li")
