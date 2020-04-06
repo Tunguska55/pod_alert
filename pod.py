@@ -118,8 +118,11 @@ reserve_time_source = driver.page_source
 # sys.exit("Done")
 
 slot_search = True
+# For testing purposes, to make sure while loop isn't infinite
+while_break = 0
 completed_options = []
-while slot_search:
+while slot_search or while_break < 20:
+    while_break+=1
     # Doing a wait here, just to be safe
     driver.implicitly_wait(3)
     print("*****")
@@ -127,9 +130,11 @@ while slot_search:
     day_slots = day_slot_parent.find_elements_by_tag_name("li")
     if completed_options:
         day_slots = [ns for ns in day_slots if ns not in completed_options]
+        print(day_slots)
     if len(day_slots) == 0:
         print("Went through all options, done")
         break
+    # print(completed_options)
     random_index = random.randint(0,len(day_slots))
     al = day_slots[random_index].get_attribute("aria-label")
     if 'unavailable' in al:
