@@ -114,8 +114,9 @@ except TimeoutException:
 
 sign_in = False
 retries = 0
-while not sign_in or retries < 3:
-    print("Signing in, attempt {} out of {}".format(retries+1, retries))
+max_retries = 3
+while not sign_in or retries < max_retries:
+    print("Signing in, attempt {} out of {}".format(retries+1, max_retries))
     use_sign = driver.find_element_by_name("loginName")
     use_sign.clear()
     use_sign.send_keys(username)
@@ -125,7 +126,7 @@ while not sign_in or retries < 3:
     start_shopping = driver.find_element_by_xpath('/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/form/div[4]/button[2]')
     start_shopping.click()
     try:
-        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
+        WebDriverWait(driver, 45).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
         sign_in = True
         print("Sign in successful")
         break
