@@ -93,8 +93,10 @@ try:
     WebDriverWait(driver, 45).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
     print("Initial page open successfully")
 except TimeoutException:
-    print("Initial page load took too long, refreshing")
-    driver.refresh()
+    print("Initial page load took too long")
+    print("If it wont load here, a refresh won't help, quitting application instead")
+    driver.quit()
+    sys.exit("Failed to open page properly")
 
 # Option 2
 # driver.get('https://www.peapod.com/shop/auth/login')
