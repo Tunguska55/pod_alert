@@ -1,6 +1,6 @@
 selenium/
 drivers/
 .vscode
-
+# Log Files
 debug.log
 geckodriver.log
