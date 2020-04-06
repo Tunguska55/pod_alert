@@ -86,10 +86,12 @@ driver = webdriver.Firefox(firefox_options=firefox_options)
 
 # During peak hours the load times increase significantly, so I will raise the
 # initial wait time to compensate
+print("Webdriver loaded with options, attempting URL")
 driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
 
 try:
     WebDriverWait(driver, 45).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
+    print("Initial page open successfully")
 except TimeoutException:
     print("Initial page load took too long, refreshing")
     driver.refresh()
