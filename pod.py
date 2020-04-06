@@ -142,7 +142,8 @@ while True:
                 print("{} is AVAILABLE".format(sl))
                 time_slot_found = True
                 # ALERTING CODE HERE
-    print(uncompleted_options)
+    # DEBUG
+    # print(uncompleted_options)
 print("-------------")
 if time_slot_found:
     print("Time slot found!")
