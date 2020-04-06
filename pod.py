@@ -25,9 +25,9 @@ import random
 def send_alert(ts):
     username = os.getenv('OUTLOOKUSER') if os.getenv('OUTLOOKUSER') else sys.exit('Missing outlook user variable')
     password = os.getenv('OUTLOOKPASS') if os.getenv('OUTLOOKPASS') else sys.exit('Missing outlook password variable')
-    receivers = os.getenv('RECEIVERS') if os.getenv('RECEIVERS') else sys.exit('Missing receivers variable')
+    receivers = os.getenv('RECEIVERS').split(',') if os.getenv('RECEIVERS') else sys.exit('Missing receivers variable')
     sender_email = username
-    receiver_email = list(receivers)
+    receiver_email = receivers
 
     msg = MIMEMultipart("alternative")
     msg['From'] = username
