@@ -120,7 +120,8 @@ reserve_time_source = driver.page_source
 slot_search = True
 # For testing purposes, to make sure while loop isn't infinite
 while_break = 0
-completed_options = []
+
+initial_pass = False
 while slot_search or while_break < 20:
     while_break+=1
     # Doing a wait here, just to be safe
@@ -128,19 +129,26 @@ while slot_search or while_break < 20:
     print("*****")
     day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
     day_slots = day_slot_parent.find_elements_by_tag_name("li")
-    if completed_options:
-        day_slots = [ns for ns in day_slots if ns not in completed_options]
-        print(day_slots)
-    if len(day_slots) == 0:
-        print("Went through all options, done")
+
+    # Work inversely through a list, subtracting rather than adding
+    if not initial_pass:
+        uncompleted_options = list(range(0,len(day_slots)))
+        initial_pass = True
+    if not uncompleted_options:
+        print("List completed")
         break
-    # print(completed_options)
-    random_index = random.randint(0,len(day_slots))
+    try:
+        random_index = uncompleted_options.pop(uncompleted_options.index(random.choice(uncompleted_options)))
+    except NameError:
+        print("Unable to find uncompleted_options, breaking")
+        break
+    except IndexError:
+        print("Index is out of range, check random_index")
+        break
     al = day_slots[random_index].get_attribute("aria-label")
     if 'unavailable' in al:
         print(al)
         print("Continuing...")
-        completed_options.append(day_slots[random_index])
         continue
     else:
         print("Choosing: {}".format(al))
@@ -158,7 +166,7 @@ while slot_search or while_break < 20:
             else:
                 print("{} is AVAILABLE".format(sl))
                 # ALERTING CODE HERE
-        completed_options.append(day_slots[random_index])
+    print(uncompleted_options)
 driver.quit()    
     
 
