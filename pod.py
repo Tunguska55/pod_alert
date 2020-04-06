@@ -83,10 +83,13 @@ driver = webdriver.Firefox(firefox_options=firefox_options)
 
 # This might need to get changed since it's a redirect
 # Option 1
+
+# During peak hours the load times increase significantly, so I will raise the
+# initial wait time to compensate
 driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
 
 try:
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
+    WebDriverWait(driver, 45).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
 except TimeoutException:
     driver.refresh()
 
