@@ -78,8 +78,8 @@ chrome_options.add_argument('--user-data-dir=selenium')
 
 # Firefox
 firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
+firefox_options.headless = True
 driver = webdriver.Firefox(firefox_options=firefox_options)
-driver.get("https://www.peapod.com")
 
 # This might need to get changed since it's a redirect
 # Option 1
