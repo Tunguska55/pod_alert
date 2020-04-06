@@ -91,6 +91,7 @@ driver.get('https://www.peapod.com/shop/auth/login?gateway=1&redirectTo=%2F')
 try:
     WebDriverWait(driver, 45).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".button--third")))
 except TimeoutException:
+    print("Initial page load took too long, refreshing")
     driver.refresh()
 
 # Option 2
