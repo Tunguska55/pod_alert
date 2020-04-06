@@ -7,3 +7,5 @@ Figure out how to build headless drivers
 
 Requires:
 Setting execution policy for windows
+
+Chrome does not work, Firefox is necessary here
