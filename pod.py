@@ -34,14 +34,14 @@ def send_alert(ts):
     msg['To'] = receiver_email
     msg['Subject'] = "Delivery Slot Available"
 
-    text = ts
+    text = str(ts)
     html = """\
     <html>
     <body>
         <p> <strong> {} </strong> </p>
     </body>
     </html>
-    """.format(ts)
+    """.format(str(ts))
 
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
@@ -193,15 +193,18 @@ while True:
         # actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
         actual_time_parent = driver.find_element_by_css_selector('.slot_times')
         actual_time = actual_time_parent.find_elements_by_tag_name("li")
+        # TODO add code to prevent stalereferenceexception
         for time in actual_time:
             sl = time.get_attribute("aria-label")
             avail = time.get_attribute("class")
             if 'sold-out' in avail:
                 print("{} is sold out".format(sl))
+                continue
             else:
                 print("{} is AVAILABLE".format(sl))
                 print("Sending email now")
                 time_slot_found = True
+                time.click()
                 send_alert("{} {}".format(al, sl))
                 # TODO add reserve time interactivity, not just an alert
     # DEBUG
