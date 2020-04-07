@@ -194,6 +194,7 @@ while True:
         actual_time_parent = driver.find_element_by_css_selector('.slot_times')
         actual_time = actual_time_parent.find_elements_by_tag_name("li")
         # TODO add code to prevent stalereferenceexception
+        driver.implicitly_wait(4)
         for time in actual_time:
             sl = time.get_attribute("aria-label")
             avail = time.get_attribute("class")
