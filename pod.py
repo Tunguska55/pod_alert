@@ -78,7 +78,7 @@ chrome_options.add_argument('--user-data-dir=selenium')
 
 # Firefox
 firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
-# firefox_options.headless = True
+firefox_options.headless = True
 driver = webdriver.Firefox(firefox_options=firefox_options)
 
 # This might need to get changed since it's a redirect
@@ -190,7 +190,8 @@ while True:
         day_slots[random_index].click()
         # Allows time slots to show, 8 works great here
         driver.implicitly_wait(8)
-        actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
+        # actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
+        actual_time_parent = driver.find_element_by_css_selector('.slot_times')
         actual_time = actual_time_parent.find_elements_by_tag_name("li")
         for time in actual_time:
             sl = time.get_attribute("aria-label")
