@@ -23,6 +23,7 @@ import random
 # Check every 15 minutes would be ideal to prevent rate limiting I would imagine
 
 def send_alert(ts):
+    print(str(ts))
     username = os.getenv('OUTLOOKUSER') if os.getenv('OUTLOOKUSER') else sys.exit('Missing outlook user variable')
     password = os.getenv('OUTLOOKPASS') if os.getenv('OUTLOOKPASS') else sys.exit('Missing outlook password variable')
     receivers = os.getenv('RECEIVERS').split(',') if os.getenv('RECEIVERS') else sys.exit('Missing receivers variable')
@@ -79,7 +80,7 @@ chrome_options.add_argument('--user-data-dir=selenium')
 # Firefox
 firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
 firefox_options.headless = True
-driver = webdriver.Firefox(firefox_options=firefox_options)
+driver = webdriver.Firefox(options=firefox_options)
 
 # This might need to get changed since it's a redirect
 # Option 1
