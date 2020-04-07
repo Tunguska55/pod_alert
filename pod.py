@@ -78,7 +78,7 @@ chrome_options.add_argument('--user-data-dir=selenium')
 
 # Firefox
 firefox_options.set_preference("browser.privatebrowsing.autostart", 'true')
-firefox_options.headless = True
+# firefox_options.headless = True
 driver = webdriver.Firefox(firefox_options=firefox_options)
 
 # This might need to get changed since it's a redirect
@@ -117,7 +117,6 @@ except TimeoutException:
 retries = 0
 max_retries = 3
 while retries < max_retries:
-    driver.implicitly_wait(5)
     print("Signing in, attempt {} out of {}".format(retries+1, max_retries))
     use_sign = driver.find_element_by_name("loginName")
     use_sign.clear()
@@ -128,7 +127,7 @@ while retries < max_retries:
     start_shopping = driver.find_element_by_xpath('/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/form/div[4]/button[2]')
     start_shopping.click()
     try:
-        WebDriverWait(driver, 45).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[10]/div/div[2]/div/form/a/button")))
+        WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a.subnav-shopping-mode_element:nth-child(5)")))
         print("Sign in successful")
         break
     except TimeoutException:
