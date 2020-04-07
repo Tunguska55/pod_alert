@@ -158,9 +158,10 @@ time_slot_found = False
 open_time_slot = {}
 while True:
     # Doing a wait here, just to be safe
-    driver.implicitly_wait(3)
+    driver.implicitly_wait(5)
     print("*****")
-    day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
+    # day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
+    day_slot_parent = driver.find_element_by_css_selector('.slot-headers-collection')
     day_slots = day_slot_parent.find_elements_by_tag_name("li")
 
     # Work inversely through a list, subtracting rather than adding
