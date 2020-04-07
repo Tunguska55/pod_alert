@@ -117,6 +117,7 @@ except TimeoutException:
 retries = 0
 max_retries = 3
 while retries < max_retries:
+    driver.implicitly_wait(5)
     print("Signing in, attempt {} out of {}".format(retries+1, max_retries))
     use_sign = driver.find_element_by_name("loginName")
     use_sign.clear()
