@@ -5,7 +5,7 @@ from selenium.webdriver.firefox.options import Options as FO
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from bs4 import BeautifulSoup
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -171,15 +171,19 @@ while True:
         initial_pass = True
     if not uncompleted_options:
         print("All of the days and times have been checked")
+        driver.quit()
         break
     try:
         random_index = uncompleted_options.pop(uncompleted_options.index(random.choice(uncompleted_options)))
     except NameError:
         print("Unable to find uncompleted_options, breaking")
+        driver.quit()
         break
     except IndexError:
         print("Index is out of range, check random_index")
+        driver.quit()
         break
+    driver.implicitly_wait(8)
     al = day_slots[random_index].get_attribute("aria-label")
     if 'unavailable' in al:
         print(al)
@@ -195,10 +199,14 @@ while True:
         actual_time_parent = driver.find_element_by_css_selector('.slot_times')
         actual_time = actual_time_parent.find_elements_by_tag_name("li")
         # TODO add code to prevent stalereferenceexception
-        driver.implicitly_wait(4)
+        driver.implicitly_wait(8)
         for time in actual_time:
-            sl = time.get_attribute("aria-label")
-            avail = time.get_attribute("class")
+            try:
+                sl = time.get_attribute("aria-label")
+                avail = time.get_attribute("class")
+            except StaleElementReferenceException:
+                print("Fixing stale element")
+                continue
             if 'sold-out' in avail:
                 print("{} is sold out".format(sl))
                 continue
