@@ -184,7 +184,12 @@ while True:
         driver.quit()
         break
     driver.implicitly_wait(8)
-    al = day_slots[random_index].get_attribute("aria-label")
+    try:
+        al = day_slots[random_index].get_attribute("aria-label")
+    except StaleElementReferenceException:
+        print("Stale element encountered during day pick")
+        print("Gracefully quitting")
+        driver.quit()
     if 'unavailable' in al:
         print(al)
         print("Continuing...")
