@@ -190,6 +190,7 @@ while True:
         print("Stale element encountered during day pick")
         print("Gracefully quitting")
         driver.quit()
+        sys.exit()
     if 'unavailable' in al:
         print(al)
         print("Continuing...")
