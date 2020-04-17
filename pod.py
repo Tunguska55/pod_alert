@@ -166,7 +166,6 @@ while True:
     # Doing a wait here, just to be safe
     driver.implicitly_wait(5)
     print("*****")
-    # day_slot_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[1]/div/div/ul')
     day_slot_parent = driver.find_element_by_css_selector('.slot-headers-collection')
     day_slots = day_slot_parent.find_elements_by_tag_name("li")
 
@@ -206,7 +205,6 @@ while True:
         day_slots[random_index].click()
         # Allows time slots to show, 8 works great here
         driver.implicitly_wait(8)
-        # actual_time_parent = driver.find_element_by_xpath('/html/body/aside/div/div/div/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div[2]/ul')
         actual_time_parent = driver.find_element_by_css_selector('.slot_times')
         actual_time = actual_time_parent.find_elements_by_tag_name("li")
         # TODO add code to prevent stalereferenceexception
