@@ -58,7 +58,9 @@ def send_alert(ts):
     try:
         mailServer.sendmail(sender_email, receiver_email, msg.as_string())
         print("Email sent")
-    except:
+    except Exception as er:
+        # Not sure what exception will be thrown so casting generic for now
+        print("Error: {}".format(er))
         print("Email failed to send")
     finally:
         mailServer.quit()
@@ -220,7 +222,7 @@ while True:
                 print("{} is AVAILABLE".format(sl))
                 print("Sending email now")
                 time_slot_found = True
-                time.click()
+                # time.click()
                 send_alert("{} {}".format(al, sl))
                 # TODO add reserve time interactivity, not just an alert
     # DEBUG
