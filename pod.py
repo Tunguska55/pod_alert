@@ -22,7 +22,7 @@ import random
 
 # Check every 15 minutes would be ideal to prevent rate limiting I would imagine
 
-def send_alert(ts):
+def send_outlook_alert(ts):
     print(str(ts))
     username = os.getenv('OUTLOOKUSER') if os.getenv('OUTLOOKUSER') else sys.exit('Missing outlook user variable')
     password = os.getenv('OUTLOOKPASS') if os.getenv('OUTLOOKPASS') else sys.exit('Missing outlook password variable')
@@ -64,6 +64,9 @@ def send_alert(ts):
         print("Email failed to send")
     finally:
         mailServer.quit()
+
+def send_gmail_alert():
+    pass
 
 username = os.getenv('PPUSER') if os.getenv('PPUSER') else sys.exit('Missing user variable')
 password = os.getenv('PPPASS') if os.getenv('PPPASS') else sys.exit('Missing password variable')
@@ -223,7 +226,7 @@ while True:
                 print("Sending email now")
                 time_slot_found = True
                 # time.click()
-                send_alert("{} {}".format(al, sl))
+                send_outlook_alert("{} {}".format(al, sl))
                 # TODO add reserve time interactivity, not just an alert
     # DEBUG
     # print(uncompleted_options)
