@@ -231,7 +231,6 @@ while True:
                 continue
             else:
                 print("{} is AVAILABLE".format(sl))
-                print("Sending email now")
                 time_slot_found = True
                 # time.click()
                 time_slot_text = str("{} {}".format(al, sl))
@@ -241,8 +240,9 @@ while True:
     # print(uncompleted_options)
 print("-------------")
 if time_slot_found:
-    print("Time slot(s) found!")
+    print("{} time slot(s) found!".format(len(available_slots)))
     if len(available_slots) > 0:
+        print("Sending email now")
         send_outlook_alert(available_slots)
 else:
     print("No available time slots.")
