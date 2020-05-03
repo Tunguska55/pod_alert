@@ -161,7 +161,7 @@ reserve_time_source = driver.page_source
 
 initial_pass = False
 time_slot_found = False
-open_time_slot = {}
+available_slots = []
 while True:
     # Doing a wait here, just to be safe
     driver.implicitly_wait(5)
@@ -224,14 +224,16 @@ while True:
                 print("Sending email now")
                 time_slot_found = True
                 # time.click()
-                email_text = str("{} {}".format(al, sl))
-                send_outlook_alert(email_text)
+                time_slot_text = str("{} {}".format(al, sl))
+                available_slots.append(time_slot_text)
                 # TODO add reserve time interactivity, not just an alert
     # DEBUG
     # print(uncompleted_options)
 print("-------------")
 if time_slot_found:
-    print("Time slot found!")
+    print("Time slot(s) found!")
+    if len(available_slots) > 0:
+        send_outlook_alert(available_slots)
 else:
     print("No available time slots.")
 
