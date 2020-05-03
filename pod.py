@@ -23,6 +23,11 @@ import random
 # Check every 15 minutes would be ideal to prevent rate limiting I would imagine
 
 def send_outlook_alert(ts):
+    # ts is a list now to prevent rate limiting
+    if len(ts) <= 0:
+        print("Email failed to send, no data in list")
+        return "Failed"
+
     username = os.getenv('OUTLOOKUSER') if os.getenv('OUTLOOKUSER') else sys.exit('Missing outlook user variable')
     password = os.getenv('OUTLOOKPASS') if os.getenv('OUTLOOKPASS') else sys.exit('Missing outlook password variable')
     receivers = os.getenv('RECEIVERS') if os.getenv('RECEIVERS') else sys.exit('Missing receivers variable')
@@ -34,14 +39,19 @@ def send_outlook_alert(ts):
     msg['To'] = receiver_email
     msg['Subject'] = "Delivery Slot Available"
 
-    text = ts
+    text = ""
+    html_text = ""
+    for slot in ts:
+        text = text + slot + "\n"
+        html_text = html_text + "<p> <strong> {} </strong> </p> <br>".format(slot)
+
     html = """\
     <html>
     <body>
-        <p> <strong> {} </strong> </p>
+        {}
     </body>
     </html>
-    """.format(ts)
+    """.format(html_text)
 
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
