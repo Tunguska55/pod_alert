@@ -23,10 +23,9 @@ import random
 # Check every 15 minutes would be ideal to prevent rate limiting I would imagine
 
 def send_outlook_alert(ts):
-    print(str(ts))
     username = os.getenv('OUTLOOKUSER') if os.getenv('OUTLOOKUSER') else sys.exit('Missing outlook user variable')
     password = os.getenv('OUTLOOKPASS') if os.getenv('OUTLOOKPASS') else sys.exit('Missing outlook password variable')
-    receivers = os.getenv('RECEIVERS').split(',') if os.getenv('RECEIVERS') else sys.exit('Missing receivers variable')
+    receivers = os.getenv('RECEIVERS') if os.getenv('RECEIVERS') else sys.exit('Missing receivers variable')
     sender_email = username
     receiver_email = receivers
 
@@ -35,14 +34,14 @@ def send_outlook_alert(ts):
     msg['To'] = receiver_email
     msg['Subject'] = "Delivery Slot Available"
 
-    text = str(ts)
+    text = ts
     html = """\
     <html>
     <body>
         <p> <strong> {} </strong> </p>
     </body>
     </html>
-    """.format(str(ts))
+    """.format(ts)
 
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
@@ -56,6 +55,7 @@ def send_outlook_alert(ts):
     mailServer.ehlo()
     mailServer.login(username, password)
     try:
+
         mailServer.sendmail(sender_email, receiver_email, msg.as_string())
         print("Email sent")
     except Exception as er:
@@ -224,7 +224,8 @@ while True:
                 print("Sending email now")
                 time_slot_found = True
                 # time.click()
-                send_outlook_alert("{} {}".format(al, sl))
+                email_text = str("{} {}".format(al, sl))
+                send_outlook_alert(email_text)
                 # TODO add reserve time interactivity, not just an alert
     # DEBUG
     # print(uncompleted_options)
